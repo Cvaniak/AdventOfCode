@@ -5,9 +5,8 @@ eye_colors = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 def read_data(file_name):
     data = open(file_name + ".txt", "r", newline=None)
     data = data.read().splitlines()
-    lenf = len(data[0])
     data = " ".join(data).replace("  ", "|").split("|")
-    return data, lenf
+    return data
 
 def is_valid_numbers(data):
     data = {key_value.split(":")[0]: key_value.split(":")[1] for key_value in data.split(" ")}
@@ -28,12 +27,12 @@ def is_valid(data, valid_parameters):
     return all(word in data for word in valid_parameters)
 
 def part_test():
-    data, lenf = read_data("test")
-    assert part_1(data, lenf) == 2
-    data, lenf = read_data("test_2")
-    assert part_2(data, lenf) == 4
+    data = read_data("test")
+    assert part_1(data) == 2
+    data = read_data("test_2")
+    assert part_2(data) == 4
 
-def part_1(data, lenf):
+def part_1(data):
     index  = 0
     for i in data:
         if 7 <= i.count(":") <= 8:                
@@ -41,7 +40,7 @@ def part_1(data, lenf):
                 index += 1
     return index
 
-def part_2(data, lenf):
+def part_2(data):
     index  = 0
     for i in data:
         if 7 <= i.count(":") <= 8:                
@@ -52,6 +51,6 @@ def part_2(data, lenf):
 
 if __name__ == "__main__":
     part_test()
-    data, lenf = read_data("input")
-    print(part_1(data, lenf))
-    print(part_2(data, lenf))
+    data = read_data("input")
+    print(part_1(data))
+    print(part_2(data))
