@@ -14,24 +14,11 @@ def part_test():
     assert part_1(data) == 6930
     assert part_2(data) == 3585
 
-def counter2(data):
-    for d in data:
-        num = d.count(" ")
-        d.replace(" ", "")
-        for i in set(d):
-            if d.count(i) > num:
-                yield 1
-
-def counter(data):
-    for d in data:
-        yield len(set(d))
-
 def part_1(data):
-    data = [w.replace(" ", "") for w in data]
-    return sum(counter(data))
+    return sum([len(set(d.replace(" ", ""))) for d in data])
 
 def part_2(data):
-    return sum(counter2(data))
+    return sum(len(set.intersection(*[set(d) for d in group.split(" ")])) for group in data)
 
 if __name__ == "__main__":
     part_test()
