@@ -9,8 +9,8 @@ def read_data(file_name):
 
 def part_test():
     data = read_data("test")
-    assert part_1(data) == 5
-    # assert part_2(data) == 32
+    # assert part_1(data) == 5
+    assert part_2(data) == 8
     # data = read_data("test2")
     # assert part_2(data) == 126
     # assert part_2(data) == 6
@@ -19,21 +19,20 @@ def part_test():
     # assert part_2(data) == 158730
 
 
-def part_1(data):
-    print(data)
-    b= []
-    for d in data:
-        b.append({d.split(" ")[0]: d.split(" ")[1]})
-    print(b)
+def part_1(b):
     ind = 0
     acc =0 
     byl = set()
+    # print(b)
     while True:
         if(ind in byl):
-            break
+            return None
+        if ind == len(b):
+            return acc
         byl.add(ind)
         for i in b[ind]:
-            print(b[ind][i])
+            # print(ind, i)
+            # print(b[ind][i])
             if i == "nop":
                 ind += 1
             elif i == "jmp":
@@ -41,7 +40,7 @@ def part_1(data):
             else:
                 acc += int(b[ind][i])
                 ind += 1
-    print(acc)
+    # print(acc)
     return acc
     # print(sum ([find_bag()])
 
@@ -70,11 +69,36 @@ def part_1(data):
         #         break
     
 def part_2(data):
+    print(data)
+    b= []
+    for d in data:
+        b.append({d.split(" ")[0]: d.split(" ")[1]})
+    print(b)
+
+    for g, i in enumerate(b):
+        for k in i:
+            print( i, k, i[k], g)
+            if int(i[k]) != 0 and k == "nop":
+                c = b.copy()
+                c[g] = {"jmp": i[k]}
+                # print(c)
+                d = part_1(c)
+                if d:
+                    return d
+
+            if k == "jmp":
+                c = b.copy()
+                c[g] = {"nop": i[k]}
+                # print(c)
+                d = part_1(c)
+                if d:
+                    return d
+            
         
 
 
 if __name__ == "__main__":
     part_test()
     data = read_data("input")
-    print(part_1(data))
-    # print(part_2(data))
+    # print(part_1(data))
+    print(part_2(data))
