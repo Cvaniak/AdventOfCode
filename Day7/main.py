@@ -1,3 +1,4 @@
+
 import re
 
 index = 0
@@ -102,3 +103,4 @@ if __name__ == "__main__":
     data = read_data("input")
     # print(part_1(data))
     print(part_2(data))
+
