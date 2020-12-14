@@ -1,5 +1,6 @@
 import collections
 import math
+import itertools
 
 def read_data(file_name):
     with open(file_name + ".txt", "r", newline=None) as data:
@@ -15,42 +16,10 @@ def part_test():
     assert part_1(data) == 11179633149677
     assert part_2(data) == 4822600194774
 
-def part_2(data):
-    res = collections.defaultdict(int)
-    a = 0
-    b1 = []
-    for d in data:
-        if d[:4] == "mask":
-            a = d[7:]
-        else:
-            z = d.find("]")
-            b1 = []
-            b = list(format(int(d[4:z]),'036b'))
-            for k, i in enumerate(a):
-                if i == "1":
-                    b[k] = "1"
-            for k, i in enumerate(a):
-                if i == "X":
-                    if len(b1) > 0:
-                        y = []
-                        for g in range(len(b1)):
-                            x = b1[g].copy()
-                            x[k] = "1"
-                            y.append(x.copy())
-                            x[k] = "0"
-                            y.append(x.copy())
-                        b1 = y
-                    else:
-                        x = b.copy()
-                        x[k] = "1"
-                        b1.append(x.copy())
-                        x[k] = "0"
-                        b1.append(x.copy())
-            for i in b1:
-                res[int("".join(i), base=2)] = int(d[z+3:])
-    return sum([res[k] for k in res])
-
-
+def all_sums(data):
+    for i in range(len(data)+1):
+        for k in itertools.combinations(data, i):
+            yield sum(k)
 
 def part_1(data):
     res = collections.defaultdict(int)
@@ -68,6 +37,24 @@ def part_1(data):
             res[int(d[4:z])] = b
     return sum([res[k] for k in res])
 
+def part_2(data):
+    res = collections.defaultdict(int)
+    for d in data:
+        if d[1] == "a":
+            a = d[7:]
+        else:
+            z = d.find("]")
+            b = list(format(int(d[4:z]),'036b'))
+            b1 = []
+            for k, i in enumerate(a):
+                if i == "1":
+                    b[k] = "1"
+                if i == "X":
+                    b[k] = "0"
+                    b1.extend([2**(35-k)])
+            for i in all_sums(b1):
+                res[int("".join(b), base=2)+i] = int(d[z+3:])
+    return sum([res[k] for k in res])
 
 if __name__ == "__main__":
     part_test()
