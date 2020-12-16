@@ -35,7 +35,7 @@ def part_1(data):
                 elif i == "0":
                     b &= ~(1<<35-k)
             res[int(d[4:z])] = b
-    return sum([res[k] for k in res])
+    return sum(res.values())
 
 def part_2(data):
     res = collections.defaultdict(int)
@@ -54,7 +54,7 @@ def part_2(data):
                     b1.extend([2**(35-k)])
             for i in all_sums(b1):
                 res[int("".join(b), base=2)+i] = int(d[z+3:])
-    return sum([res[k] for k in res])
+    return sum(res.values())
 
 if __name__ == "__main__":
     part_test()
