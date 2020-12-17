@@ -11,10 +11,10 @@ def part_test():
     data = read_data("test")
     assert part_1(data) == 71 
     data = read_data("test2")
-    part_2(data)
-    # data = read_data("input")
-    # assert part_1(data) == 11179633149677
-    # assert part_2(data) == 4822600194774
+    assert part_2(data) == 11*12*13
+    data = read_data("input")
+    assert part_1(data) == 24980
+    assert part_2(data) == 809376774329
 
 
 def part_1(data):
@@ -65,6 +65,8 @@ def part_2(data):
             valid.append(list(map(int, data[k].split(","))))
     print(len(valid), len(data))
 
+    z = [[] for i in range(len(my))]
+    print(z)
     for r in range(0, len(ranges), 2):
         for l in range(len(my)):
             va = 0
@@ -74,16 +76,47 @@ def part_2(data):
                 else:
                     va = 1
             if va != 1:
-                print("valid")
+                # print("valid")
+                z[l].append(1)
             else:
-                print("Not valid")
+                # print("Not valid")
+                z[l].append(0)
+    # print(z)
+    # z = list(map(list, zip(*reversed(z[::-1]))))
+    for i in z:
+        print(i)
+    index = [i for i in range(len(my))]
+    index1 = [i for i in range(len(my))]
+    mul = 1
+    mul1 = 1
+    while True:
+        if len(z) == 0:
+            break
+        for k,i in enumerate(z):
+            if sum(i) == 1:
+                # print(k, i)
+                y = i.index(1)
+                e = index1.pop(k)
+                z.pop(k)
+                
+                for x in z:
+                    x.pop(y)
+                d = index.pop(y)
+                if d < 6:
+                    print(d, my[y], e, my[e])
+                    mul *= my[d]
+                    mul1 *= my[e]
+    for i in z:
+        print(i)
+    return mul1
+
 
     # print(valid)
 
 if __name__ == "__main__":
     part_test()
     data = read_data("input")
-    # print(part_1(data))
+    print(part_1(data))
     print(part_2(data))
 
     
