@@ -20,6 +20,7 @@ def part_test():
 def part_1(data):
     i = 0
     ranges = []
+    # Get ranges
     while True:
         print(data[i].find("or"))
         if -1 == data[i].find("or"):
@@ -30,21 +31,19 @@ def part_1(data):
         i += 1
     i += 5
     su = 0
+    # Check if invalid
     for k in range(i, len(data)):
         for g in map(int, data[k].split(",")):
             if not any( (f[0]<=g<=f[1]) for f in ranges):
-                # print(g)
                 su += g
-        #     print(g)
-        # print(data[k])
     print(ranges)
     return su
 
 def part_2(data):
     i = 0
     ranges = []
+    # Get ranges
     while True:
-        # print(data[i].find("or"))
         if -1 == data[i].find("or"):
             break
         a = data[i].split(":")[1].split(" ")
@@ -56,6 +55,7 @@ def part_2(data):
     print(my)
     i += 3
     valid = []
+    # Take only valid
     for k in range(i, len(data)):
         t = 0
         for g in map(int, data[k].split(",")):
@@ -67,6 +67,7 @@ def part_2(data):
 
     z = [[] for i in range(len(my))]
     print(z)
+    # Create matrix where rows are columns from input, if in column is 1 then this is valid range
     for r in range(0, len(ranges), 2):
         for l in range(len(my)):
             va = 0
@@ -81,14 +82,13 @@ def part_2(data):
             else:
                 # print("Not valid")
                 z[l].append(0)
-    # print(z)
-    # z = list(map(list, zip(*reversed(z[::-1]))))
     for i in z:
         print(i)
     index = [i for i in range(len(my))]
     index1 = [i for i in range(len(my))]
     mul = 1
     mul1 = 1
+    # Delete row and column if in row only one 1
     while True:
         if len(z) == 0:
             break
