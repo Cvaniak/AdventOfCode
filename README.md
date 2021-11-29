@@ -1,2 +1,2 @@
-# AdventOfCode2020
-Attempts in Advent Of Code 2020
+# AdventOfCode
+Attempts in Advent Of Code
