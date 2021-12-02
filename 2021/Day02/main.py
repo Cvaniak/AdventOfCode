@@ -4,7 +4,6 @@ import functools
 import itertools
 from itertools import product, permutations, combinations
 import math 
-# from math import sqrt, sin, cos, log, fab
 
 def read_data(file_name):
     with open(file_name + ".txt", "r", newline=None) as data:
