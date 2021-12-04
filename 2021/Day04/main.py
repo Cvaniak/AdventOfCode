@@ -12,8 +12,8 @@ def read_data(file_name):
 
 def part_test():
     data = read_data("test")
-    assert part_1(data) == 4512
-    assert part_2(data) == None
+    # assert part_1(data) == 4512
+    assert part_1(data) == 1924
 
 def part_1(data):
     print(data)
@@ -46,10 +46,11 @@ def part_1(data):
                     if i in y[0]:
                         y[0].remove(i)
                         if len(y[0]) == 0:
-                            al.remove(k)
-                            if len(al) == 0:
-                                print("Hyc")
-                                return k, i, y[1]
+                            if k in al:
+                                al.remove(k)
+                                if len(al) == 0:
+                                    print("Hyc")
+                                    return k, i, y[1]
                         
     w, z, sz = find()
 
