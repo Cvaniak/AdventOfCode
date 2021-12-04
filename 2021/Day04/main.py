@@ -38,6 +38,7 @@ def part_1(data):
             boardssets[-1].append((set(j), sum(j)))
     print(boardssets)
     print()
+    al = set(range(len(boardssets)))
     def find():
         for i in nums:
             for k, x in enumerate(boardssets):
@@ -45,8 +46,11 @@ def part_1(data):
                     if i in y[0]:
                         y[0].remove(i)
                         if len(y[0]) == 0:
-                            print("Hyc")
-                            return k, i, y[1]
+                            al.remove(k)
+                            if len(al) == 0:
+                                print("Hyc")
+                                return k, i, y[1]
+                        
     w, z, sz = find()
 
 
