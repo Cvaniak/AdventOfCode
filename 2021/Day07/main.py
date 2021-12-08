@@ -19,13 +19,15 @@ def part_1(data):
     data = list(map(int, data[0].split(",")))
     mx = max(data)
     mn = min(data)
-    co = {x:y for x,y in enumerate(range(mx*10000))}
-    print(co)
+    c =defaultdict(int)
+    for i in range(1, mx*1000):
+        c[i] = c[i-1]+i
+
     r = mx*10000000
-    for i in range(-mn*2, mx*2):
+    for i in range(mn, mx*10):
         m = 0
         for j in data:
-            m += abs(j-i) 
+            m += c[abs(j-i)]
         r = min(r, m)
     return r
 
@@ -37,6 +39,6 @@ if __name__ == "__main__":
     part_test()
     data = read_data("input")
     print(part_1(data))
-    print(part_2(data))
+    # print(part_2(data))
 
     
