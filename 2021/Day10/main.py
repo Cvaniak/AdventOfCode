@@ -3,23 +3,26 @@ from collections import defaultdict, Counter
 import functools
 import itertools
 from itertools import product, permutations, combinations
-import math 
+import math
+
 
 def read_data(file_name):
     with open(file_name + ".txt", "r", newline=None) as data:
         data = data.read().splitlines()
         return data
 
+
 def part_test():
     data = read_data("test")
     assert part_1(data) == 26397
-    assert part_2(data) ==288957
+    assert part_2(data) == 288957
+
 
 def part_1(data):
     a = []
-    w = {"[":"]", "<":">", "{":"}", "(":")"}
-    w1 = {w[x]:x for x in w}
-    z = {"]":57, ">":25137, "}":1197, ")":3}
+    w = {"[": "]", "<": ">", "{": "}", "(": ")"}
+    w1 = {w[x]: x for x in w}
+    z = {"]": 57, ">": 25137, "}": 1197, ")": 3}
     r = 0
     for i in data:
         for idx, j in enumerate(i):
@@ -28,18 +31,19 @@ def part_1(data):
             else:
                 k = a.pop()
                 if j != k:
-                    r +=z[j]
+                    r += z[j]
                     break
                 # if w1[j] != k:
-                    # print("oj")
-        
+                # print("oj")
+
     return r
+
 
 def part_2(data):
     a = []
-    w = {"[":"]", "<":">", "{":"}", "(":")"}
-    w1 = {w[x]:x for x in w}
-    z = {"]":2, ">":4, "}":3, ")":1}
+    w = {"[": "]", "<": ">", "{": "}", "(": ")"}
+    w1 = {w[x]: x for x in w}
+    z = {"]": 2, ">": 4, "}": 3, ")": 1}
     r = []
     for i in data:
         a = []
@@ -62,10 +66,10 @@ def part_2(data):
     print(r)
     r.sort()
     print(r)
-    r1 = r[(len(r)//2)]
+    r1 = r[(len(r) // 2)]
     print(r1)
     return r1
-                # if w1[j] != k:    ...
+    # if w1[j] != k:    ...
 
 
 if __name__ == "__main__":
@@ -73,5 +77,3 @@ if __name__ == "__main__":
     data = read_data("input")
     print(part_1(data))
     print(part_2(data))
-
-    

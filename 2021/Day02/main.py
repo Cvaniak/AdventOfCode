@@ -3,46 +3,49 @@ from collections import defaultdict, Counter
 import functools
 import itertools
 from itertools import product, permutations, combinations
-import math 
+import math
+
 
 def read_data(file_name):
     with open(file_name + ".txt", "r", newline=None) as data:
         data = data.read().splitlines()
         return data
 
+
 def part_test():
     data = read_data("test")
     # assert part_1(data) == None
     # assert part_2(data) == None
 
+
 def part_1(data):
-    x, y = 0,0 
+    x, y = 0, 0
     for i in data:
         a, b = i.split(" ")
         b = int(b)
-        if a =="up":
+        if a == "up":
             y -= b
         elif a == "down":
             y += b
         elif a == "forward":
             x += b
-    return x*y
+    return x * y
 
- 
+
 def part_2(data):
     ...
-    x, y, z = 0,0,0 
+    x, y, z = 0, 0, 0
     for i in data:
         a, b = i.split(" ")
         b = int(b)
-        if a =="up":
+        if a == "up":
             y -= b
         elif a == "down":
             y += b
         elif a == "forward":
             z += b
-            x = x + y*b
-    return x*z
+            x = x + y * b
+    return x * z
 
 
 if __name__ == "__main__":
@@ -50,5 +53,3 @@ if __name__ == "__main__":
     data = read_data("input")
     print(part_1(data))
     print(part_2(data))
-
-    
