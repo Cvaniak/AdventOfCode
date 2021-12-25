@@ -9,25 +9,10 @@ from rich import print
 import operator
 
 
-def prod(factors):
-    return functools.reduce(operator.mul, factors, 1)
-
-
 def read_data(file_name):
     with open(file_name + ".txt", "r", newline=None) as data:
         data = data.read().splitlines()
         return data
-
-
-def load_int_lines(datat):
-    data = datat[:]
-    for idx, i in enumerate(data):
-        data[idx] = [x for x in i]
-    return data
-
-
-def load_int_commas(datat):
-    return list(map(int, datat[0].split(",")))
 
 
 def part_test():
@@ -53,14 +38,6 @@ def part_1(datat):
         if i != "start":
             d[j].append(i)
         d[i].append(j)
-    # tmp = []
-    # for i in d:
-    #     if i.islower() and len(d[i]) < 1:
-    #         tmp.append(i)
-    # for i in tmp:
-    #     d.pop(i, None)
-
-    visited = set()
 
     def foo(x, y, z):
         if x == "end":
@@ -97,19 +74,10 @@ def part_2(datat):
             small.add(i)
         if j.islower() and j not in ["start", "end"]:
             small.add(j)
-    # tmp = []
-    print(d)
-    # for i in d:
-    #     if i.islower() and len(d[i]) < 1:
-    #         tmp.append(i)
-    # for i in tmp:
-    #     d.pop(i, None)
-
     res = set()
 
     def foo(x, y, z):
         if x == "end":
-            # print(",".join(z))
             res.add(tuple(z))
             return 1
         if x.islower() and (x == cantwo and y[x] >= 2):
@@ -131,14 +99,10 @@ def part_2(datat):
 
     mx = 0
     for i in small:
-        print(i)
         cantwo = i
         n = foo("start", defaultdict(int), ["start"])
-        print(n)
         mx = max(mx, n)
 
-    # pprint(res)
-    print(len(res))
     return len(res)
 
 
@@ -147,14 +111,3 @@ if __name__ == "__main__":
     data = read_data("input")
     print(part_1(data))
     print(part_2(data))
-
-# start,A,b,A,c,A,end
-# start,A,b,A,end
-# start,A,b,end
-# start,A,c,A,b,A,end
-# start,A,c,A,b,end
-# start,A,c,A,end
-# start,A,end
-# start,b,A,c,A,end
-# start,b,A,end
-# start,b,end
