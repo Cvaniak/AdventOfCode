@@ -43,34 +43,7 @@ def part_test():
     assert part_2(data, 18) == 16
 
 
-def part_1(datat, n):
-    data = datat[:]
-    dat = []
-    for i in range(n):
-        dat.append(list(map(int, datat[i].split(","))))
-
-    fold = parser(data[n + 1])
-    # print(dat)
-    # print(fold)
-    s = set()
-    for i in dat:
-        if fold[0] == "y":
-            if i[1] > fold[1]:
-                s.add((i[0], 2 * fold[1] - i[1]))
-            else:
-                s.add((i[0], i[1]))
-        else:
-            if i[0] > fold[1]:
-                s.add((2 * fold[1] - i[0], i[1]))
-            else:
-                s.add((i[0], i[1]))
-
-    # print(s)
-    print(len(s))
-    return len(s)
-
-
-def part_2(datat, n):
+def sol(datat, n, fold_all=False):
     data = datat[:]
     dat = []
     for i in range(n):
@@ -79,11 +52,11 @@ def part_2(datat, n):
     folds = []
     for i in data[n + 1 :]:
         folds.append(parser(i))
+    
+    if not fold_all:
+        folds = [folds[0]]
 
-    # print(dat)
-    # print(folds)
     s1 = set(dat)
-    # print(s1)
     mxx, mxy = 10000, 10000
     for fold in folds:
         s = set()
@@ -102,8 +75,9 @@ def part_2(datat, n):
                 mxx = min(mxx, fold[1])
         s1 = s
 
-    # print(s)
-    print(len(s))
+    if not fold_all:
+        return len(s)
+
     for i in range(mxy):
         for j in range(mxx):
             if (j, i) in s:
@@ -113,6 +87,11 @@ def part_2(datat, n):
         print()
     return len(s)
 
+def part_1(datat, n):
+    return sol(datat, n, False)
+
+def part_2(datat, n):
+    return sol(datat, n, True)
 
 if __name__ == "__main__":
     part_test()
