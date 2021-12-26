@@ -52,7 +52,7 @@ def sol(datat, n, fold_all=False):
     folds = []
     for i in data[n + 1 :]:
         folds.append(parser(i))
-    
+
     if not fold_all:
         folds = [folds[0]]
 
@@ -87,11 +87,14 @@ def sol(datat, n, fold_all=False):
         print()
     return len(s)
 
+
 def part_1(datat, n):
     return sol(datat, n, False)
 
+
 def part_2(datat, n):
     return sol(datat, n, True)
+
 
 if __name__ == "__main__":
     part_test()

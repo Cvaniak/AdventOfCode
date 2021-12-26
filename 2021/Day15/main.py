@@ -43,7 +43,7 @@ def sol(data):
         if d > da[y][x]:
             continue
         for i, j in dir:
-            nx, ny= x + i, y + j
+            nx, ny = x + i, y + j
             if 0 > nx or nx >= n or 0 > ny or ny >= n:
                 continue
             a = d + data[ny][nx]

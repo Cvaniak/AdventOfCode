@@ -22,6 +22,7 @@ def part_test():
     assert sol(data, 10) == 1588
     assert sol(data, 40) == 2188189693529
 
+
 def sol(datat, n):
     data = datat[:]
     st = list(data[0])
@@ -48,6 +49,7 @@ def sol(datat, n):
     most_common = c1.most_common()
     mx, mn = most_common[0], most_common[-1]
     return mx[1] - mn[1]
+
 
 def part_1(datat):
     return sol(datat, 10)
