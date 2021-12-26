@@ -11,48 +11,34 @@ import parse
 import operator
 from heapq import heappop, heappush
 
-debug = False
+debug = set("0")
+debug_space = False
 
 
-def dbg(*args, **kwargs):
-    if debug:
+def dbg(*args, lvl="0", **kwargs):
+    if lvl in debug:
+        print(lvl)
         print(*args, **kwargs)
-
+        if debug_space: 
+            print()
 
 def set_debuger():
-    global debug
+    global debug, debug_space
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--debug", action="store_true", help="Enable debug")
+    parser.add_argument('-d', '--debug', nargs="?", const = "0", default="0",  help='Debug List')
+    parser.add_argument('-n', '--nodebug', action='store_true', help='Remove default debug')
+    parser.add_argument('-s', '--addspace', action='store_true', help='Space between debug')
     args = parser.parse_args()
-    debug = args.debug
+    debug.update({x for x in args.debug})
+    if args.nodebug:
+        debug.remove("0")
+    if args.addspace:
+        debug_space = True
 
 
 wsen = {"E": (1, 0), "S": (0, -1), "W": (-1, 0), "N": (0, 1)}
 dir_4 = [(-1, 0), (0, -1), (1, 0), (0, 1)]
 dir_8 = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)]
-
-
-def a_star(data):
-    n = len(data)
-    m = len(data[0])
-    da = [[float("inf")] * (m) for _ in range(n)]
-    dir = [(-1, 0), (0, -1), (1, 0), (0, 1)]
-    da[0][0] = 0
-
-    dq = [(da[0][0], 0, 0)]
-    while dq:
-        d, y, x = heappop(dq)
-        if d > da[y][x]:
-            continue
-        for i, j in dir:
-            xi = x + i
-            yj = y + j
-            if 0 <= xi < m and 0 <= yj < n:
-                a = d + data[yj][xi]
-                if a < da[yj][xi]:
-                    da[yj][xi] = a
-                    heappush(dq, (a, yj, xi))
-    return da[-1][-1]
 
 
 def prod(factors):
