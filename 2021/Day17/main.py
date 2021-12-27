@@ -28,6 +28,7 @@ def part_test():
     assert part_1(data) == 45
     assert part_2(data) == 112
 
+
 def fox(y, y1, y2):
     yy = 0
     mx = 0
@@ -63,7 +64,7 @@ def foox(x, x1, x2):
 def part_1(datat):
     data = datat[:][0]
     data = parser(data)
-    return ((data["y2"]+1)*data["y2"]//2)
+    return (data["y2"] + 1) * data["y2"] // 2
 
 
 def part_2(datat):
