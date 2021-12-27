@@ -10,14 +10,6 @@ import parse
 import operator
 from heapq import heappop, heappush
 
-wsen = {"E": (1, 0), "S": (0, -1), "W": (-1, 0), "N": (0, 1)}
-dir_4 = [(-1, 0), (0, -1), (1, 0), (0, 1)]
-dir_8 = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)]
-
-
-def prod(factors):
-    return functools.reduce(operator.mul, factors, 1)
-
 
 def read_data(file_name):
     with open(file_name + ".txt", "r", newline=None) as data:
@@ -32,46 +24,26 @@ def load_int_lines(datat):
     return data
 
 
-def load_int_commas(datat):
-    return list(map(int, datat[0].split(",")))
-
-
-def parser(data):
-    pattern = "{test} foo {test1:d}"
-    match = parse.search(pattern, data)
-    match.named
-
-
 def part_test():
-    data = read_data("test")
-    # assert x4("101111111000101000") == 15
-    # assert part_1(["38006F45291200"]) == None
-    # assert part_1(["EE00D40C823060"]) == None
-    # assert part_1(["8A004A801A8002F478"]) == 16
-    # assert part_1(["620080001611562C8802118E34"]) == 12
-    # assert part_1(["C0015000016115A2E0802F182340"]) == 23
-    # assert part_1(["A0016C880162017C3686B18A3D4780"]) == 31
+    assert x4("101111111000101000") == (15, 2021)
+    assert part_1(["38006F45291200"]) == 9
+    assert part_1(["EE00D40C823060"]) == 14
+    assert part_1(["8A004A801A8002F478"]) == 16
+    assert part_1(["620080001611562C8802118E34"]) == 12
+    assert part_1(["C0015000016115A2E0802F182340"]) == 23
+    assert part_1(["A0016C880162017C3686B18A3D4780"]) == 31
     assert part_2(["C200B40A82"]) == 3
     assert part_2(["04005AC33890"]) == 54
     assert part_2(["D8005AC2A8F0"]) == 1
     assert part_2(["F600BC2D8F"]) == 0
 
 
-def hextobin(data):
+def hex_to_bin(data):
     d = [int(x, 16) for x in data]
-    print(d)
     r = ""
     for i in d:
         r += "{0:04b}".format(i)
     return r
-
-
-def x11(data, L):
-    return L * 11
-
-
-def x15(data, L):
-    return L
 
 
 def x4(data):
@@ -82,17 +54,6 @@ def x4(data):
         r += 5
     numbers += data[r + 1 : r + 5]
     r += 5
-
-    # for idx, i in enumerate(data):
-    #     print(idx, i)
-    #     if idx%5 == 0:
-    #         if i == "0":
-    #             r = idx + 5
-    #             break
-    #         else:
-    #             numbers.append(int(n, 2))
-    #     else:
-    #         n += i
     return r, int(numbers, 2)
 
 
@@ -102,8 +63,6 @@ def foo(data):
     a += 3
     T = int(data[a : a + 3], 2)
     a += 3
-    # print("V i T")
-    # print(V, T)
     if T == 4:
         b, numbers = x4(data[a:])
         a += b
@@ -133,7 +92,7 @@ def foo(data):
         if T == 0:
             numbers = sum(numbers)
         elif T == 1:
-            numbers = prod(numbers)
+            numbers = math.prod(numbers)
         elif T == 2:
             numbers = min(numbers)
         elif T == 3:
@@ -150,17 +109,14 @@ def foo(data):
 
 def part_1(datat):
     data = datat[:][0]
-    data = hextobin(data)
-    a = 0
-    V = foo(data)
-    # print("aaaa")
+    data = hex_to_bin(data)
+    V, A, Numbers = foo(data)
     return V
 
 
 def part_2(datat):
     data = datat[:][0]
-    data = hextobin(data)
-    a = 0
+    data = hex_to_bin(data)
     V, A, Numbers = foo(data)
     return Numbers
 
@@ -168,5 +124,5 @@ def part_2(datat):
 if __name__ == "__main__":
     part_test()
     data = read_data("input")
-    # print(part_1(data))
+    print(part_1(data))
     print(part_2(data))
