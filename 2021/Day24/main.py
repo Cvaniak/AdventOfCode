@@ -48,18 +48,7 @@ def read_data(file_name):
         data = data.read().splitlines()
         return data
 
-
-def load_int_lines(datat):
-    data = datat[:]
-    for idx, i in enumerate(data):
-        data[idx] = [x for x in i]
-    return data
-
-
-def load_int_commas(datat):
-    return list(map(int, datat[0].split(",")))
-
-
+        
 def parser(data):
     pattern = "{op} {ax} {val:d}"
     match = parse.search(pattern, data)
@@ -79,46 +68,9 @@ def parser(data):
 
 def part_test():
     data = read_data("test")
-    # assert part_1(data) == 1
-    # assert part_2(data) == None
 
 
-def op(d, nam, kk):
-    ope = nam["op"]
-    axi = nam["ax"]
-    if ope == "inp":
-        # d[axi] = int(number.pop(0))
-        return
-    if kk:
-        ...
-
-    val = nam["val"]
-    if not isinstance(val, int):
-        val = d[val]
-
-    if ope == "add":
-        d[axi] = d[axi] + val
-    elif ope == "mul":
-        d[axi] = d[axi] * val
-    elif ope == "div":
-        d[axi] = d[axi] // val
-    elif ope == "mod":
-        d[axi] = d[axi] % val
-    elif ope == "eql":
-        d[axi] = 1 if d[axi] == val else 0
-
-
-def sol(pz, w, block, idx):
-    x = pz % 26 + block[idx]["x"]
-    pz = pz // block[idx]["z"]
-    if x != w:
-        pz *= 26
-        pz += w + block[idx]["y"]
-    return pz
-
-
-def part_1(datat):
-    data = datat[:]
+def sol(data):
     block = []
     for idx, i in enumerate(data):
         if idx % 18 == 0:
@@ -144,12 +96,18 @@ def part_1(datat):
         else:
             fox.append((stack.pop(), (idx, i["x"])))
     dbg(fox, lvl="2")
+    return fox
+
+def part_1(datat):
+    data = datat[:]
+    fox = sol(data)
+
     rd = dict()
     for pair in fox:
         a, b = pair[0], pair[1]
         off = a[1] + b[1]
         dbg(pair, lvl="3")
-        dbg(pair, lvl="3")
+        dbg(off, lvl="3")
         for i in range(9, 0, -1):
             if 0 < i + off < 10:
                 rd[a[0]] = i
@@ -159,7 +117,14 @@ def part_1(datat):
     r = ""
     for i in range(14):
         r += str(rd[i])
-    print(r)
+
+    return r
+
+
+
+def part_2(datat):
+    data = datat[:]
+    fox = sol(data)
 
     rd = dict()
     for pair in fox:
@@ -176,13 +141,9 @@ def part_1(datat):
     r = ""
     for i in range(14):
         r += str(rd[i])
-    print(r)
 
-    return
+    return r
 
-
-def part_2(datat):
-    data = datat[:]
 
 
 if __name__ == "__main__":
