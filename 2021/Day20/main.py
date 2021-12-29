@@ -46,7 +46,7 @@ def part_test():
 def conv(i, j, data, line):
     r = ""
     for y, x in dir_9:
-        r += str(data[(i+y, j+x)])
+        r += str(data[(i + y, j + x)])
 
     rb = int(r, 2)
     return line[rb]

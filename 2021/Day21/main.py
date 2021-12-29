@@ -94,7 +94,6 @@ def part_1(datat, a, b):
 
 
 def part_2(datat, a, b):
-
     @lru_cache(None)
     def how_many(points, position):
         pos = position + points
@@ -127,7 +126,6 @@ def part_2(datat, a, b):
                     s = sol(p1, p, True)
                     c.update(s)
         return c
-
 
     p1 = (0, a)
     p2 = (0, b)

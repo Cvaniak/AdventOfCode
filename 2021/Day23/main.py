@@ -207,7 +207,6 @@ def foo(spot, hall):
     return mn
 
 
-
 room_size = 0
 
 

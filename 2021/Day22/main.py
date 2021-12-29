@@ -125,15 +125,13 @@ def part_2(datat):
                     nstate += ii
                     ns.remove(ww)
 
-            ns.add(fox(x1, x2, y1, y2, z1, z2, nstate-i.state))
-
+            ns.add(fox(x1, x2, y1, y2, z1, z2, nstate - i.state))
 
         if sgn == 1:
             w = fox(**w1)
             if w in ns:
                 dbg(w)
             ns.add(w)
-
 
         se = se.union(ns)
 

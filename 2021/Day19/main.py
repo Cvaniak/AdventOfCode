@@ -14,6 +14,7 @@ wsen = {"E": (1, 0), "S": (0, -1), "W": (-1, 0), "N": (0, 1)}
 dir_4 = [(-1, 0), (0, -1), (1, 0), (0, 1)]
 dir_8 = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)]
 
+
 def prod(factors):
     return functools.reduce(operator.mul, factors, 1)
 
@@ -76,6 +77,7 @@ def pl(x, y):
 def transpose(m):
     return [list(e) for e in zip(*m)]
 
+
 def foo(a, b):
     all_b = [all_o(x) for x in b]
     all_b = transpose(all_b)
@@ -105,7 +107,6 @@ def part_1(datat):
         elif x == None and i:
             data.append([])
 
-
     for i in range(len(data)):
         first = rel(**data[i][0])
         for j in range(len(data[i])):
@@ -130,7 +131,7 @@ def part_1(datat):
                     k = pl(k, off)
                     s_sean.add(k)
                 break
-    
+
     print(len(s_sean))
     mx = 0
     for i in prt2:
@@ -139,6 +140,7 @@ def part_1(datat):
     print(mx)
 
     return len(s_sean)
+
 
 def part_2(datat):
     data = datat[:]

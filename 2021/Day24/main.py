@@ -48,7 +48,7 @@ def read_data(file_name):
         data = data.read().splitlines()
         return data
 
-        
+
 def parser(data):
     pattern = "{op} {ax} {val:d}"
     match = parse.search(pattern, data)
@@ -98,6 +98,7 @@ def sol(data):
     dbg(fox, lvl="2")
     return fox
 
+
 def part_1(datat):
     data = datat[:]
     fox = sol(data)
@@ -121,7 +122,6 @@ def part_1(datat):
     return r
 
 
-
 def part_2(datat):
     data = datat[:]
     fox = sol(data)
@@ -143,7 +143,6 @@ def part_2(datat):
         r += str(rd[i])
 
     return r
-
 
 
 if __name__ == "__main__":

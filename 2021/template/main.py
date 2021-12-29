@@ -19,15 +19,22 @@ def dbg(*args, lvl="0", **kwargs):
     if lvl in debug:
         print(lvl)
         print(*args, **kwargs)
-        if debug_space: 
+        if debug_space:
             print()
+
 
 def set_debuger():
     global debug, debug_space
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--debug', nargs="?", const = "0", default="0",  help='Debug List')
-    parser.add_argument('-n', '--nodebug', action='store_true', help='Remove default debug')
-    parser.add_argument('-s', '--addspace', action='store_true', help='Space between debug')
+    parser.add_argument(
+        "-d", "--debug", nargs="?", const="0", default="0", help="Debug List"
+    )
+    parser.add_argument(
+        "-n", "--nodebug", action="store_true", help="Remove default debug"
+    )
+    parser.add_argument(
+        "-s", "--addspace", action="store_true", help="Space between debug"
+    )
     args = parser.parse_args()
     debug.update({x for x in args.debug})
     if args.nodebug:

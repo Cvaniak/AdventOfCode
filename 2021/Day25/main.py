@@ -19,15 +19,22 @@ def dbg(*args, lvl="0", **kwargs):
     if lvl in debug:
         print(lvl)
         print(*args, **kwargs)
-        if debug_space: 
+        if debug_space:
             print()
+
 
 def set_debuger():
     global debug, debug_space
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--debug', nargs="?", const = "0", default="0",  help='Debug List')
-    parser.add_argument('-n', '--nodebug', action='store_true', help='Remove default debug')
-    parser.add_argument('-s', '--addspace', action='store_true', help='Space between debug')
+    parser.add_argument(
+        "-d", "--debug", nargs="?", const="0", default="0", help="Debug List"
+    )
+    parser.add_argument(
+        "-n", "--nodebug", action="store_true", help="Remove default debug"
+    )
+    parser.add_argument(
+        "-s", "--addspace", action="store_true", help="Space between debug"
+    )
     args = parser.parse_args()
     debug.update({x for x in args.debug})
     if args.nodebug:
@@ -49,7 +56,7 @@ def part_test():
 
 
 def pri(south, east, n, m):
-    zeros = [ ["."] * m for _ in range(n)]
+    zeros = [["."] * m for _ in range(n)]
     for i in range(n):
         for j in range(m):
             if (i, j) in south:
@@ -57,15 +64,18 @@ def pri(south, east, n, m):
             elif (i, j) in east:
                 zeros[i][j] = ">"
         zeros[i] = "".join(zeros[i])
-    zeros.append("."*m)
-    zeros.append("."*m)
-    zeros.append("."*m)
+    zeros.append("." * m)
+    zeros.append("." * m)
+    zeros.append("." * m)
     return zeros
+
 
 def part_1(datat):
     data = datat[:]
     for idx, i in enumerate(data):
-        data[idx] = list(map(int, i.replace(".", "0").replace(">","1").replace('v', "2")))
+        data[idx] = list(
+            map(int, i.replace(".", "0").replace(">", "1").replace("v", "2"))
+        )
     dbg(data, lvl="1")
 
     east = set()
@@ -83,19 +93,19 @@ def part_1(datat):
         neast = set()
         nsouth = set()
         for y, x in east:
-            if (y, (x+1)%m) in east or (y, (x+1)%m) in south:
+            if (y, (x + 1) % m) in east or (y, (x + 1) % m) in south:
                 neast.add((y, x))
             else:
-                neast.add((y, (x+1)%m))
-            
+                neast.add((y, (x + 1) % m))
+
         for y, x in south:
-            if ((y+1)%n, x) in neast or ((y+1)%n, x) in south:
+            if ((y + 1) % n, x) in neast or ((y + 1) % n, x) in south:
                 nsouth.add((y, x))
             else:
-                nsouth.add(((y+1)%n, x))
+                nsouth.add(((y + 1) % n, x))
         c += 1
         dbg(east, neast, lvl="3")
-        if c%10 == 0:
+        if c % 10 == 0:
             dbg(pri(nsouth, neast, n, m), lvl="4")
         if neast == east and nsouth == south:
             break
