@@ -84,20 +84,16 @@ def part_test():
 
 def part_1(datat):
     data = datat[:]
-    w = ord("X") - 1
     r = 0
-    wi = {2: 1, 3: 2, 1: 3}
-    lo = {1: 2, 2: 3, 3: 1}
 
     for i in data:
         a, x = i.split(" ")
-        r += ord(x) - w
-        a = ord(a) - ord("A") + 1
-        x = ord(x) - ord("X") + 1
-        r += 3
-        if wi[x] == a:
+        a = ord(a) - ord("A")
+        x = ord(x) - ord("X")
+        r += x + 4
+        if (x + 2) % 3 == a:
             r += 3
-        elif lo[x] == a:
+        elif (x + 1) % 3 == a:
             r -= 3
 
     return r
