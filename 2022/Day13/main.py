@@ -85,7 +85,7 @@ def parser(data):
 def part_test():
     data = read_data("test")
     assert part_1(data) == 13
-    assert part_2(data) == None
+    assert part_2(data) == 140
 
 
 def list_wrap(x):
@@ -100,25 +100,25 @@ def foo(x, y):
 
     for i in range(len(x)):
         if i >= len(y):
-            return False
+            return -1
         if all(isinstance(w, list) for w in [x[i], y[i]]):
             res = foo(x[i], y[i])
-            if res is None:
+            if res == 0:
                 continue
             return res
         elif all(isinstance(w, int) for w in [x[i], y[i]]):
             if x[i] > y[i]:
-                return False
+                return -1
             if x[i] < y[i]:
-                return True
+                return 1
         else:
             res = foo(list_wrap(x[i]), list_wrap(y[i]))
-            if res is None:
+            if res == 0:
                 continue
             return res
     if len(x) == len(y):
-        return None
-    return True
+        return 0
+    return 1
 
 def part_1(data):
     result = 0
@@ -127,7 +127,7 @@ def part_1(data):
         b = data[idx+1]
         a, b = json.loads(a), json.loads(b)
         dbg(idx//3+1, lvl='b')
-        if foo(a, b):
+        if foo(a, b) == 1:
             dbg(a, b, idx//3+1, lvl='a')
             result += idx//3+1
 
@@ -139,8 +139,14 @@ def part_2(data):
     data = [json.loads(x) for x in data if x != '']
     data.append([[2]])
     data.append([[6]])
-    data.sort(key=lambda x ,y: foo(x, y))
-    print(data)
+    data.sort(key=functools.cmp_to_key(lambda x ,y: foo(x, y)), reverse=True)
+    a = data.index([[2]])
+    b = data.index([[6]])
+    # print(data)
+    # print(a,b, a*b)
+
+    return (1+a)*(1+b)
+    # print(data)
 
 
 
@@ -150,4 +156,4 @@ if __name__ == "__main__":
     part_test()
     data = read_data("input")
     print(part_1(data[:]))
-    # print(part_2(data[:]))
+    print(part_2(data[:]))
