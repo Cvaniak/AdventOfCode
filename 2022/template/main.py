@@ -87,11 +87,11 @@ def part_test():
     assert part_2(data) == None
 
 
-def part_1(datat):
+def part_1(data):
     ...
 
 
-def part_2(datat):
+def part_2(data):
     ...
 
 
