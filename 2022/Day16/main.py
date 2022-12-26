@@ -83,13 +83,12 @@ def parser(data):
         return match.named
 
 
-
 # ===== ^^ PART OF TEMPLATE ^^ =====
 
 
 def part_test():
     data = read_data("test")
-    # assert part_1(data) == 1651
+    assert part_1(data) == 1651
     assert part_2(data) == 1707
 
 
@@ -102,97 +101,52 @@ def part_1(data):
         vb = vb.split(", ")
         graph[va].extend(vb)
         rates[va] = int(rate)
-    
 
-    # @functools.lru_cache(maxsize=None)
-    # def foo(node, left, opened):
-    #     if left <= 0:
-    #         return 0
-    #
-    #     mx = 0
-    #     if node not in opened:
-    #
-    #         if rates[node] >= 0:
-    #             n_opened = tuple(sorted((node,)+opened))
-    #             n_val = rates[node] * (left-1)
-    #             for tunel in graph[node]:
-    #                 mx = max(mx, n_val+foo(tunel, left-2, n_opened))
-    #
-    #     for tunel in graph[node]:
-    #         mx = max(foo(tunel, left-1, opened), mx)
-    #
-    #     return mx
+    def floyd_warshall(graph):
+        paths = defaultdict(lambda: defaultdict(lambda: float("inf")))
 
+        for node, node_list in graph.items():
+            paths[node][node] = 0
 
+            for node_b in node_list:
+                paths[node][node_b] = 1
+                paths[node_b][node_b] = 0
 
-    # result = foo("AA", 30, tuple())
-    # result = maxflow("AA", tuple(), 30)
+        for i, j, k in product(graph, graph, graph):
+            if paths[i][j] + paths[j][k] < paths[i][k]:
+                paths[i][k] = paths[i][j] + paths[j][k]
 
-    # q = deque([("AA", 30, 0)])
-    # mx = 0
-    # while q:
-    #     node, left, score = q.popleft() 
-    #     if left <= 0:
-    #         mx = max(mx, score)
-    #         continue
-    #     
-    #     for tunel in graph[node]:
-    #         q.append((tunel, left-1, score))
-    #     score += left*rates[node]
-    #     for tunel in graph[node]:
-    #         q.append((tunel, left-1, score))
+        return paths
 
-    # best = {}
-    # mx = 0
-    # while q:
-    #
-    #     node, opened, score, left = q.popleft()
-    #     if left == 0:
-    #         mx = max(score, mx)
-    #
-    #
-    #     key = (node, opened)
-    #     if key in best and score <= best[key]:
-    #         continue
-    #
-    #     best[key] = score
-    #
-    #     flow_rate, lead_to = rates[node], graph[node]
-    #     if node not in opened and flow_rate > 0:
-    #
-    #         q.append((node, tuple(sorted((node,)+opened)), score + flow_rate * (left-1), left-1))
-    #     for dest in lead_to:
-    #         q.append((dest, opened, score, left-1))
-    # result = mx
+    def calc_score(score):
+        return sum([rates[node] * time for node, time in score.items()])
 
-    queue = [('AA', tuple(), 0)]
+    paths = floyd_warshall(graph)
+    should_visit = set([x for x in graph if rates[x] != 0])
 
-    best = {}
+    queue = deque([("AA", should_visit, dict(), 30)])
+    result_que = []
 
-    for left in range(30,0,-1):
-
-        new_queue = []
-        for node, opened, score in queue:
-            key = (node, opened)
-            if key in best and score <= best[key]:
+    while queue:
+        node, to_visit, score, left = queue.pop()
+        for new_node in to_visit:
+            new_time = left - paths[node][new_node] - 1
+            if new_time < 2:
                 continue
 
-            best[key] = score
+            queue.append(
+                (
+                    new_node,
+                    should_visit - {new_node},
+                    score | {new_node: (new_time)},
+                    new_time,
+                )
+            )
+        result_que.append(score)
 
-            rate, tunels = rates[node], graph[node]
-            if node not in opened and rate > 0:
-                new_queue.append((node, tuple(sorted((node,)+opened)), score + rate * (left-1)))
+    result = max(calc_score(score) for score in result_que)
 
-            for dest in tunels:
-                new_queue.append((dest, opened, score))
-
-        queue = new_queue
-
-    result = max(score for _, _, score in queue)
-
-    print(result)
     return result
-
 
 
 def part_2(data):
@@ -205,9 +159,6 @@ def part_2(data):
         graph[va].extend(vb)
         rates[va] = int(rate)
 
-    # After so many attemts lets try with some new staff
-    # Lesson for today floyd_warshall
-    result = 0
     def floyd_warshall(graph):
         paths = defaultdict(lambda: defaultdict(lambda: float("inf")))
 
@@ -218,46 +169,47 @@ def part_2(data):
                 paths[node][node_b] = 1
                 paths[node_b][node_b] = 0
 
-        for i in paths:
-            for j in paths:
-                for k in paths:
-                    if paths[i][j] + paths[j][k] < paths[i][k]:
-                        paths[i][k] = paths[i][j]+paths[j][k]
+        for i, j, k in product(graph, graph, graph):
+            if paths[j][i] + paths[i][k] < paths[j][k]:
+                paths[j][k] = paths[j][i] + paths[i][k]
 
         return paths
 
-    paths = floyd_warshall(graph)
-    should_visit = frozenset([x for x in graph if rates[x]])
-    
-    # queue = [('AA', tuple(), 0)]
-    #
-    # best = {}
-    #
-    # for left in range(30,0,-1):
-    #
-    #     new_queue = []
-    #     for node, opened, score in queue:
-    #         key = (node, opened)
-    #         if key in best and score <= best[key]:
-    #             continue
-    #
-    #         best[key] = score
-    #
-    #         rate, tunels = rates[node], graph[node]
-    #         if node not in opened and rate > 0:
-    #             new_queue.append((node, tuple(sorted((node,)+opened)), score + rate * (left-1)))
-    #
-    #         for dest in tunels:
-    #             new_queue.append((dest, opened, score))
-    #
-    #     queue = new_queue
-    #
-    # result = max(score for _, _, score in queue)
+    def calc_score(score):
+        return sum([rates[node] * time for node, time in score.items()])
 
-    
+    paths = floyd_warshall(graph)
+    should_visit = set([x for x in graph if rates[x]])
+
+    def result_que(node, to_visit, score, left):
+        for new_node in to_visit:
+            new_time = left - paths[node][new_node] - 1
+            if new_time < 2:
+                continue
+
+            yield from result_que(
+                new_node,
+                should_visit - {new_node},
+                score | {new_node: (new_time)},
+                new_time,
+            )
+        yield score
+
+    nodes_score = defaultdict(int)
+
+    # for score in result_que:
+    for score in result_que("AA", should_visit, dict(), 26):
+        set_score, calculated = frozenset(score), calc_score(score)
+        if calculated > nodes_score[set_score]:
+            nodes_score[frozenset(score)] = calc_score(score)
+
+    result = max(
+        score_a + score_b
+        for (set_a, score_a), (set_b, score_b) in combinations(nodes_score.items(), 2)
+        if not set_a & set_b
+    )
 
     return result
-    # return 1707
 
 
 if __name__ == "__main__":
@@ -265,5 +217,6 @@ if __name__ == "__main__":
 
     part_test()
     data = read_data("input")
-    # print(part_1(data[:]))
+    part1 = part_1(data[:])
+    assert part1 == 1584
     print(part_2(data[:]))
