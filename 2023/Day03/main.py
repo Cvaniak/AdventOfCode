@@ -149,7 +149,7 @@ def part_2(data):
     sm = 0
     for rations_list in gears_ratios.values():
         if len(rations_list) == 2:
-            sm += rations_list[0]*rations_list[1]
+            sm += prod(rations_list)
     return sm
 
 
