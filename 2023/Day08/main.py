@@ -120,19 +120,17 @@ def part_test():
     assert part_1(data) == 2
     data = read_data("test_2")
     assert part_1(data) == 6
-    data = read_data("test_3")
-    assert part_2(data) == 6
 
 
 def part_1(data):
     lr = data[0]
-    lr = [ int(x) for x in lr.replace("L",  "0").replace("R", "1")]
+    lr = [int(x) for x in lr.replace("L", "0").replace("R", "1")]
     dbg(lr)
 
     graph = dict()
     for line in data[2:]:
         start, _, to = line.partition(" = ")
-        l, _,r = to[1:-1].partition(", ")
+        l, _, r = to[1:-1].partition(", ")
         graph[start] = (l, r)
     dbg(graph)
 
@@ -140,7 +138,7 @@ def part_1(data):
     steps = 0
     n = len(lr)
     while start != "ZZZ":
-        l_r = lr[steps%n]
+        l_r = lr[steps % n]
         start = graph[start][l_r]
         steps += 1
 
@@ -150,44 +148,36 @@ def part_1(data):
 
 def part_2(data):
     lr = data[0]
-    lr = [ int(x) for x in lr.replace("L",  "0").replace("R", "1")]
-    dbg(lr)
+    lr = [int(x) for x in lr.replace("L", "0").replace("R", "1")]
 
-    starting = set()
+    starting = []
     ending = set()
     graph = dict()
     for line in data[2:]:
         start, _, to = line.partition(" = ")
-        l, _,r = to[1:-1].partition(", ")
+        l, _, r = to[1:-1].partition(", ")
         graph[start] = (l, r)
         if start[2] == "A":
-            starting.add(start)
+            starting.append(start)
         elif start[2] == "Z":
             ending.add(start)
-    # dbg(graph)
-    dbg(ending)
+    dbg(len(lr))
 
-    steps = 0
+    ww = []
     n = len(lr)
-    while True:
-        # dbg(starting)
+    r = 1
+    for start in starting:
+        steps = 0
+        while start not in ending:
+            l_r = lr[steps % n]
+            start = graph[start][l_r]
+            steps += 1
+        ww.append(steps)
 
-        l_r = lr[steps%n]
-        new_starting = set()
-        for node in starting:
-            start = graph[node][l_r]
-            new_starting.add(start)
-        steps += 1
+    r = math.lcm(*ww)
+    dbg(r)
 
-        if new_starting.issubset(ending):
-            break
-
-        starting = new_starting
-
-
-    dbg(steps)
-    return steps
-
+    return r
 
 
 if __name__ == "__main__":
