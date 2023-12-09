@@ -8,6 +8,7 @@ import operator
 from collections import Counter, defaultdict, deque
 from heapq import heappop, heappush
 from itertools import combinations, permutations, product
+from math import lcm
 
 import parse
 from rich import print
@@ -95,15 +96,15 @@ def read_data(file_name):
         return data
 
 
-def load_int_lines(datat):
-    data = datat[:]
+def load_int_lines(data):
+    data = data[:]
     for idx, i in enumerate(data):
-        data[idx] = [x for x in i]
+        data[idx] = [int(x) for x in i]
     return data
 
 
-def load_ints_seperated(datat, sep=","):
-    return list(map(int, datat[0].split(sep)))
+def load_ints_seperated(data, sep=","):
+    return list(map(int, data.split(sep)))
 
 
 def parser(data):
