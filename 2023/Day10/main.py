@@ -148,8 +148,22 @@ def part_1(data):
         if start_idx != -1:
             start = (idx, start_idx)
             break
+    assert start != (-1, -1)
 
-    q = [((start[0], start[1] + 1), start, 0)]
+    sy, sx = start
+    first = (0, 0)
+    for dy, dx in dir_4:
+        val = data[sy + dy][sx + dx]
+        if val in ".":
+            continue
+        for yy, xx in d[val]:
+            if (dy + yy, dx + xx) == (0, 0):
+                first = (sy + dy, sx + dx)
+
+    assert first != (0, 0)
+    dbg(start, first)
+
+    q = [(first, start, 0)]
     been = set([start])
 
     step = 0
@@ -167,7 +181,7 @@ def part_1(data):
     return (step + 1) // 2
 
 
-def part_2(data, first = (0, 1)):
+def part_2(data, first=(0, 1)):
     n, m = len(data), len(data[0])
     start_idx = -1
     start = (-1, -1)
@@ -176,9 +190,22 @@ def part_2(data, first = (0, 1)):
         if start_idx != -1:
             start = (idx, start_idx)
             break
+    assert start != (-1, -1)
+
+    sy, sx = start
+    first = (0, 0)
+    for dy, dx in dir_4:
+        val = data[sy + dy][sx + dx]
+        if val in ".":
+            continue
+        for yy, xx in d[val]:
+            if (dy + yy, dx + xx) == (0, 0):
+                first = (sy + dy, sx + dx)
+
+    assert first != (0, 0)
 
     dbg(n, m, start)
-    q = [((start[0]+first[0], start[1] + first[1]), start, 0)]
+    q = [(first, start, 0)]
     been = set([start])
     dbg(q)
 
@@ -193,7 +220,6 @@ def part_2(data, first = (0, 1)):
             break
         been.add(node)
 
-
         y, x = node
         mnx = min(mnx, x)
         mny = min(mny, y)
@@ -204,36 +230,35 @@ def part_2(data, first = (0, 1)):
                 continue
             q.append(((y + yy, x + xx), node, step + 1))
 
-    dbg(mnx,mny,mxx,mxy)
+    dbg(mnx, mny, mxx, mxy)
     dbg(len(been))
 
     ans = 0
-    for yy in range(mny-1, mxy+2):
+    for yy in range(mny - 1, mxy + 2):
         count = 0
         last = ""
-        for xx in range(mnx-1, mxx+2):
+        for xx in range(mnx - 1, mxx + 2):
             if (yy, xx) in been:
                 g = data[yy][xx]
-                if g  == "|":
-                    count = 1-count
+                if g == "|":
+                    count = 1 - count
                 elif g in "LF":
                     last = g
                 elif g == "J":
                     if last == "F":
-                        count = 1-count
+                        count = 1 - count
                     last = ""
                 elif g == "7":
                     if last == "L":
-                        count = 1-count
+                        count = 1 - count
                     last = ""
             else:
                 if count:
                     dbg.w(yy, xx)
-                    ans+=1
+                    ans += 1
 
     dbg(ans)
     return ans
-
 
 
 if __name__ == "__main__":
