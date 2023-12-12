@@ -170,6 +170,7 @@ def part_1(data):
 
 
 def part_2(data):
+    @functools.lru_cache()
     def foo(idx, curr, num_idx) -> int:
         if idx == n:
             if num_idx == m and curr == 0:
@@ -208,6 +209,7 @@ def part_2(data):
     zz = len(data)
     res = 0
     for idx, line in enumerate(data):
+        foo.cache_clear()
         unk, _, nums = line.partition(" ")
         nums = load_ints_seperated(nums)
         unk += "?"
