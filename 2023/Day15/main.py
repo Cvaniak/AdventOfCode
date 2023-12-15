@@ -166,44 +166,32 @@ def d_labels(labels):
 
 def part_2(data):
     data = data[0].split(',')
-    boxes = [Linked("#", 0, None, None) for _ in range(256)]
+    boxes = [[] for _ in range(256)]
+    labels = dict()
     for text in data:
         if text[-1] == "-":
             label, hsh = text[:-1], hash(text[:-1])
-            l = boxes[hsh]
-            while l.nxt != None:
-                if l.label == label:
-                    l.prv.nxt = l.nxt
-                    l = None
-                    break
-                l = l.nxt
-            if l is not None and l.label == label:
-                l.prv.nxt = None
+            if label in boxes[hsh]:
+                boxes[hsh].remove(label)
 
         else:
             label, hsh, foc = text[:-2], hash(text[:-2]), text[-1]
-            l = boxes[hsh]
-            while l.nxt is not None:
-                if l.label == label:
-                    break
-                l = l.nxt
-            if l.label == label:
-                l.val = int(foc)
-            else:
-                l.nxt = Linked(label, int(foc), l, None)
+            if label not in boxes[hsh]:
+                boxes[hsh].append(label)
+            labels[label] = int(foc)
 
         # dbg()
-    d_labels(boxes)
+    # d_labels(boxes)
 
     ans = 0
     for idx, label in enumerate(boxes, 1):
         i = 0
         tmp = 0
-        while label.nxt is not None:
-            label = label.nxt
+        for x in label:
             i += 1
-            tmp += idx*i*label.val
+            tmp += idx*i*labels[x]
         ans += tmp
+    dbg(ans)
 
     return ans
 
