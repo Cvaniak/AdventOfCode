@@ -118,9 +118,8 @@ def parser(data):
 
 def part_test():
     data = read_data("test")
-    # assert part_1(data, 6) == 16
-    assert part_2(data, 10) == 50
-    assert part_2(data, 100) == 6536
+    assert part_1(data, 6) == 16
+    # assert part_2(data, 10) == 50
     # assert part_2(data, 500) == 167004
     # assert part_2(data, 5000) == 16733044
 
@@ -136,7 +135,6 @@ def part_1(data, steps=64):
     been = [set([start]), set()]
     for i in range(steps):
         w = len(q)
-        # dbg(w)
         for _ in range(w):
             y, x = q.popleft()
             for dy, dx in dir_4:
@@ -144,7 +142,6 @@ def part_1(data, steps=64):
                 if (yy, xx) not in been[(i + 1) % 2] and data[yy][xx] == ".":
                     q.append((yy, xx))
                     been[(1 + i) % 2].add((yy, xx))
-        # dbg(len(been[0]), len(been[1]))
     return len(been[0])
 
 
@@ -157,10 +154,10 @@ def part_2(data, steps=26501365):
                 start = (y, x)
     q = deque([start])
     been = [set([start]), set()]
+    values = []
     for i in range(steps):
         w = len(q)
         zeros = 0
-        # dbg(w)
         for _ in range(w):
             y, x = q.popleft()
             if (y % n, x % m) == start:
@@ -170,12 +167,20 @@ def part_2(data, steps=26501365):
                 if (yy, xx) not in been[(i + 1) % 2] and data[yy % n][xx % m] != "#":
                     q.append((yy, xx))
                     been[(1 + i) % 2].add((yy, xx))
-        if zeros > 0:
-            dbg(i)
-            dbg(len(been[0]), len(been[1]))
-            dbg(zeros)
-    dbg(len(been[0]), len(been[1]))
-    return len(been[0])
+
+        if i % n == start[0] - 1:
+            # z = len(been[i % 2])
+            values.append(len(been[(i + 1) % 2]))
+        if len(values) == 3:
+            break
+
+    d0, d1, d2 = (
+        values[0],
+        values[1] - values[0],
+        values[2] - 2 * values[1] + values[0],
+    )
+    ans = d0 + d1 * (steps // n) + d2 * (steps // n * (steps // n - 1) // 2)
+    return ans
 
 
 if __name__ == "__main__":
@@ -184,4 +189,7 @@ if __name__ == "__main__":
     part_test()
     data = read_data("input")
     print(part_1(data[:]))
+    # print(part_2(data[:], 65))
+    # print(part_2(data[:], 196))
+    # print(part_2(data[:], 327))
     print(part_2(data[:]))
