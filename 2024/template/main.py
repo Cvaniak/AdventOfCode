@@ -82,8 +82,9 @@ def set_debuger():
 # ===== ^^ DEBUGER ^^ =====
 
 wsen = {"E": (1, 0), "S": (0, -1), "W": (-1, 0), "N": (0, 1)}
-dir_4 = [(-1, 0), (0, -1), (1, 0), (0, 1)]
-dir_8 = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)]
+dir_4 = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+dir_4c = [(-1, 1), (1, 1), (1, -1), (-1, -1)]
+dir_8 = [(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1)]
 
 
 def prod(factors):
@@ -111,6 +112,27 @@ def parser(data):
     pattern = "{test} foo {test1:d}"
     match = parse.search(pattern, data)
     match.named
+
+
+class Matrix:
+    data: list[list[int]]
+    n: int
+    m: int
+
+    def __init__(self, data) -> None:
+        self.data = data
+        self.n = len(data)
+        self.m = len(data[0])
+
+    def s_get(self, y, x, default=None):
+        if 0 > y or y >= self.n or 0 > x or x >= self.m:
+            return default
+        return self.data[y][x]
+
+    def s_set(self, y, x, value):
+        if 0 > y or y >= self.n or 0 > x or x >= self.m:
+            return
+        self.data[y][x] = value
 
 
 # ===== ^^ PART OF TEMPLATE ^^ =====
