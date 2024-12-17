@@ -202,6 +202,40 @@ class Matrix:
 
         return -1
 
+    def solve_2(self):
+        q = [(0, self.start, 1, [])]
+        been = dict()
+        done = []
+        best = float('inf')
+
+        while q:
+            points, pos, dir, bn = heappop(q)
+            if points > best:
+                break
+            if (pos, dir) in been and been[(pos, dir)] < points:
+                continue
+            been[(pos, dir)] = points
+            if pos == self.end:
+                done.append(bn)
+                best = points
+                continue
+
+            for d_dir, add_score in [(0, 1), (-1, 1001), (1, 1001)]:
+                n_dir = (dir + d_dir) % 4
+                if self.s_get_p(pos + dir_4[n_dir], "!") in ".E":
+                    heappush(q, (points + add_score, pos + dir_4[n_dir], n_dir, bn + [d_dir]))
+
+        res = set([self.start])
+        for bn in done:
+            start = self.start
+            dir = 1
+            for n_dir in bn:
+                dir = (dir+n_dir)%4
+                start += dir_4[dir]
+                res.add(start)
+
+        return len(res)
+
 # ===== ^^ PART OF TEMPLATE ^^ =====
 
 
@@ -224,7 +258,10 @@ def part_1(data):
 
 
 def part_2(data): 
-    ...
+    matrix = Matrix(data)
+    res = matrix.solve_2()
+    print(res)
+    return res
 
 
 if __name__ == "__main__":
