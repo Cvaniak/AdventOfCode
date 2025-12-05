@@ -1,2 +1,2 @@
-rich
+rich==14.2.0
 parse
